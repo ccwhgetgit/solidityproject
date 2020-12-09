@@ -32,8 +32,8 @@ contract lotteryGame {
     function bet(uint number) public payable {
      
    
-        require(number >=1 && number <= maxNumber, "lower number to be betted please");
-       
+        require(number >=1 && number <= maxNumber, "bet within the range ");
+             
         require( msg.value  >= minWager, "dont be stingy, the min bet is higher" );
        
         playerDetails[msg.sender].amountBetted = msg.value;
@@ -49,7 +49,7 @@ contract lotteryGame {
          
 }
 
-function announceWinners() private {
+    function announceWinners() private {
     
        
         address payable[maxPlayers] memory winners;
@@ -71,14 +71,14 @@ function announceWinners() private {
             winners[j].transfer((playerDetails[winners[j]].amountBetted /totalWinningWager) * totalBetted);
 } }
 
-  function kill() public {
+    function kill() public {
         if (msg.sender == owner) {
             selfdestruct(owner);
         }
 }
 //end the contract 
 
- function getWinningNumber() view public returns (uint) {
+    function getWinningNumber() view public returns (uint) {
         return winningNumber;
 }
  
