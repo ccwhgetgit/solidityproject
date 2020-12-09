@@ -14,13 +14,12 @@ contract Tokencreation{
     
     address payable[] globallist;
     
-    function EthertoToken() public payable returns(bool){
+    function EthertoToken() public payable{
         require (msg.value>=1 ether, "Need to change more than 1 Ether");
         require (msg.sender.balance>= msg.value/1 ether,"Not enough funds to convert to Tokens");
         playerinfo[msg.sender].totaltokens+=msg.value/1 ether;
         globallist.push(msg.sender);
-        
-        return true;
+
     }
     
     function Playertokens() public view returns (uint){
@@ -48,8 +47,6 @@ contract HollyRollyPolly is Tokencreation{
         owner=msg.sender;
     }
     
-    
-    fallback() external payable{}
   
     
     function participate(uint _nroftokens, uint _numselected) public payable {
