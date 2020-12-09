@@ -69,7 +69,12 @@ contract lotteryGame {
         // make payments to each winning player
         for (uint j=0; j<winnerCount; j++) {
             winners[j].transfer((playerDetails[winners[j]].amountBetted /totalWinningWager) * totalBetted);
-} }
+} 
+        if (winnerCount == 0){
+            owner.transfer(address(this).balance);
+            }
+
+}
 
     function kill() public {
         if (msg.sender == owner) {
