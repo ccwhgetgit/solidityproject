@@ -97,11 +97,11 @@ contract HollyRollyPolly is Tokencreation{
     
     //Only owner can start the game...
     function gameplay() public payable onlyOwner{
-        require(playerlist.length>=1,"Not enough players");
+        require(playerlist.length>=5,"Not enough players");
         require(state == GameState.NOTSTARTED, "Game is either in progress or has ended. Please start a new game.");
         state = GameState.INPROGRESS;
-        //uint answer = rndGenerate(6) + 1;
-        uint answer = 2;
+        uint answer = rndGenerate(6) + 1;
+        //uint answer = 2;
         
         uint winnertottokens;
         for (uint i=0; i<playerlist.length;i++){
