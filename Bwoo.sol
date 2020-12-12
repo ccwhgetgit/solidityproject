@@ -4,6 +4,8 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contr
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
 contract Tokencreation is Ownable{
+    using SafeMath for uint;
+    
     struct Player{
         uint totaltokens;
         uint bettokens;
@@ -29,6 +31,13 @@ contract Tokencreation is Ownable{
             changes[msg.sender].isChanged = true;
         }
     }
+    
+    function TokentoEther(uint _xchangetokens) public payable{
+        require (_xchangetokens>0, "Need to change more than 1 Token");
+        require (playerinfo[msg.sender].totaltokens>= _xchangetokens,"You cannot change out more tokens than you possess");
+        playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_xchangetokens);
+        msg.sender.transfer(_xchangetokens*1 ether);
+    }    
     
     function Playertokens() public view returns (uint){
         return playerinfo[msg.sender].totaltokens;
