@@ -22,6 +22,9 @@ contract Tokencreation is Ownable{
     
     address payable[] globallist;
     
+    event changeEthertoToken(address account, uint amount);
+    event changeTokentoEther(address account, uint amount);
+    
     function EthertoToken() public payable{
         require (msg.value>=1 ether, "Need to change more than 1 Ether");
         require (msg.sender.balance>= msg.value/1 ether,"Not enough funds to convert to Tokens");
@@ -30,6 +33,7 @@ contract Tokencreation is Ownable{
             globallist.push(msg.sender);
             changes[msg.sender].isChanged = true;
         }
+        emit changeEthertoToken(msg.sender, msg.value/1 ether);
     }
     
     function TokentoEther(uint _xchangetokens) public payable{
@@ -37,6 +41,7 @@ contract Tokencreation is Ownable{
         require (playerinfo[msg.sender].totaltokens>= _xchangetokens,"You cannot change out more tokens than you possess");
         playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_xchangetokens);
         msg.sender.transfer(_xchangetokens*1 ether);
+        emit changeTokentoEther(msg.sender, msg.value/1 ether);
     }    
     
     function Playertokens() public view returns (uint){
@@ -73,9 +78,13 @@ contract HollyRollyPolly is Tokencreation{
     //     owner=msg.sender;
     // }
     
+    event randomStart();
+    event playerParticipate(address player, uint betAmount, uint guessNumber);
+    event distributeWinnings(address player, uint oldValue, uint winnings, uint newValue);
     
     function rndGenerate(uint mod) internal returns(uint){
         counter++; //Cannot be view since we are modifying sth in the function. 
+        emit randomStart();
         return uint(keccak256(abi.encodePacked(counter, block.timestamp, block.difficulty, msg.sender))) % mod;
     }
     
@@ -94,6 +103,7 @@ contract HollyRollyPolly is Tokencreation{
         tokenpot=tokenpot.add(_nroftokens);
         playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_nroftokens);
         playerinfo[msg.sender].userexists=true;
+        emit playerParticipate(msg.sender, _nroftokens, _numselected);
     }
     
     function numberofplayers() public view returns (uint){
@@ -120,20 +130,13 @@ contract HollyRollyPolly is Tokencreation{
                 winnertottokens+=playerinfo[playerAddress].bettokens;
             }
         }
-        if (winnerlist.length==0){
-            for (uint i=0; i<globallist.length;i++){
-            address payable playerAddress=globallist[i];
-                if (playerinfo[playerAddress].totaltokens>0){
-                    playerAddress.transfer(playerinfo[playerAddress].totaltokens*1 ether);
-                }
-            }
-        }
-        else{
+        if(winnerlist.length > 0) {
            uint payout = tokenpot / winnerlist.length;
            for (uint j=0; j<winnerlist.length; j++){
               address payable winnerAddress=winnerlist[j];
               //uint payout=(tokenpot/winnertottokens)*playerinfo[winnerAddress].bettokens;
               tokenpot=tokenpot.sub(payout);
+              emit distributeWinnings(msg.sender, playerinfo[winnerAddress].totaltokens, payout,playerinfo[winnerAddress].totaltokens.add(payout));
               playerinfo[winnerAddress].totaltokens=playerinfo[winnerAddress].totaltokens.add(payout);
            } 
         //   if (tokenpot!=0){
