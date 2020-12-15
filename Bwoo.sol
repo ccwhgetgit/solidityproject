@@ -85,6 +85,10 @@ contract HollyRollyPolly is Tokencreation{
         tokenpot=tokenpot.add(_nroftokens);
         playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_nroftokens);
         playerinfo[msg.sender].userexists=true;
+<<<<<<< HEAD
+=======
+        emit playerParticipate(msg.sender, _nroftokens, _numselected);
+>>>>>>> 61ff2fbda5d2958a8455ab5cdb47a5c8620a1375
     }
     
     function numberofplayers() public view returns (uint){
