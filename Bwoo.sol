@@ -164,12 +164,12 @@ contract HollyRollyPolly is Tokencreation{
     
     //Gives the addressess of the participants (fyi NOT globallist) 
     function displayPlayerList() public view returns (address payable[] memory){
-        return globallist;
+        return playerlist;
     }
     
-    function check() public view returns(uint){
-        return playerinfo[msg.sender].bettokens;
-    }
+    //function check() public view returns(uint){
+        //return playerinfo[msg.sender].bettokens;
+    //}
     
     function potsize() public view returns (uint){
         return tokenpot;
