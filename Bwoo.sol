@@ -4,6 +4,8 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contr
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
 contract Tokencreation is Ownable{
+    using SafeMath for uint;
+    
     struct Player{
         uint totaltokens;
         uint bettokens;
@@ -20,6 +22,9 @@ contract Tokencreation is Ownable{
     
     address payable[] globallist;
     
+    event changeEthertoToken(address account, uint amount);
+    event changeTokentoEther(address account, uint amount);
+    
     function EthertoToken() public payable{
         require (msg.value>=1 ether, "Need to change more than 1 Ether");
         require (msg.sender.balance>= msg.value/1 ether,"Not enough funds to convert to Tokens");
@@ -28,7 +33,16 @@ contract Tokencreation is Ownable{
             globallist.push(msg.sender);
             changes[msg.sender].isChanged = true;
         }
+        emit changeEthertoToken(msg.sender, msg.value/1 ether);
     }
+    
+    function TokentoEther(uint _xchangetokens) public payable{
+        require (_xchangetokens>0, "Need to change more than 1 Token");
+        require (playerinfo[msg.sender].totaltokens>= _xchangetokens,"You cannot change out more tokens than you possess");
+        playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_xchangetokens);
+        msg.sender.transfer(_xchangetokens*1 ether);
+        emit changeTokentoEther(msg.sender, msg.value/1 ether);
+    }    
     
     function Playertokens() public view returns (uint){
         return playerinfo[msg.sender].totaltokens;
@@ -64,9 +78,14 @@ contract HollyRollyPolly is Tokencreation{
     //     owner=msg.sender;
     // }
     
+    event randomStart();
+    event playerParticipate(address player, uint betAmount, uint guessNumber);
+    event distributeWinnings(address player, uint winnings);
+    event earnings(address player, uint winnings);
     
     function rndGenerate(uint mod) internal returns(uint){
-        counter++; //Cannot be view since we are modifying sth in the function. 
+        counter++; //Cannot be view since we are modifying sth in the function.
+        emit randomStart();
         return uint(keccak256(abi.encodePacked(counter, block.timestamp, block.difficulty, msg.sender))) % mod;
     }
     
@@ -85,7 +104,7 @@ contract HollyRollyPolly is Tokencreation{
         tokenpot=tokenpot.add(_nroftokens);
         playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.sub(_nroftokens);
         playerinfo[msg.sender].userexists=true;
-
+        emit playerParticipate(msg.sender, _nroftokens, _numselected);
     }
     
     function numberofplayers() public view returns (uint){
@@ -98,7 +117,7 @@ contract HollyRollyPolly is Tokencreation{
     
     //Only owner can start the game...
     function gameplay() public payable onlyOwner{
-        require(playerlist.length>=1,"Not enough players");
+        require(playerlist.length>=3,"Not enough players");
         require(state == GameState.NOTSTARTED, "Game is either in progress or has ended. Please start a new game.");
         state = GameState.INPROGRESS;
         //uint answer = rndGenerate(6) + 1;
