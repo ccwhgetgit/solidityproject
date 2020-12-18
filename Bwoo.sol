@@ -61,6 +61,8 @@ contract Tokencreation is Ownable{
 
 }
 
+
+
 //Each contract will represent a gameplay instance. 
 contract HollyRollyPolly is Tokencreation{
     using SafeMath for uint;
@@ -74,6 +76,7 @@ contract HollyRollyPolly is Tokencreation{
     uint tokenpot;
     uint counter=1;
     uint betFixed = 0;
+    uint startTime;
     GameState state = GameState.NOTSTARTED;
     
     // constructor() public{
@@ -100,6 +103,7 @@ contract HollyRollyPolly is Tokencreation{
         require(_numselected>=1 && _numselected<=6,"Choose a number from 1 to 6");
         if(betFixed == 0){ //Set the base template bet of the room.
             betFixed = _nroftokens;
+            startTime=block.timestamp;
         }
         playerlist.push(msg.sender);
         playerinfo[msg.sender].bettokens=_nroftokens;
@@ -177,6 +181,7 @@ contract HollyRollyPolly is Tokencreation{
     
     //Only owner can start the game...
     function gameplay() public payable onlyOwner{
+        //remember to change settings, currently set for debugging purposes 
         require(playerlist.length>=1,"Not enough players");
         require(state == GameState.NOTSTARTED, "Game is either in progress or has ended. Please start a new game.");
         state = GameState.INPROGRESS;
@@ -222,4 +227,20 @@ contract HollyRollyPolly is Tokencreation{
         state = GameState.ENDED;
         selfdestruct(payable(owner()));
     }
+    
+    //function startTimeCheck() public view returns (uint){
+    //    return startTime;
+    //}
+    
+    function contractExpiry() public payable onlyOwner{
+        require(block.timestamp>startTime+30 minutes && startTime!=0 ,"Contract has not expired");
+        for (uint i=0; i<globallist.length;i++){
+            address payable playerAddress=globallist[i];
+            if (playerinfo[playerAddress].totaltokens>0){
+                playerAddress.transfer(playerinfo[playerAddress].totaltokens*1 ether);
+            }
+        }
+        selfdestruct(payable(owner()));
+    }
+    
 }
