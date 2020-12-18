@@ -89,7 +89,15 @@ contract HollyRollyPolly is Tokencreation{
     event earnings(address player, uint winnings);
     event playerLeft(address player, bool participate);
     
-    
+    modifier tempListClear(){
+        if(temp_playerlist.length!=0){
+            delete temp_playerlist;
+        }
+        if(temp_globallist.length!=0){
+            delete temp_globallist;
+        }
+        _;
+    }
     
     function rndGenerate(uint mod) internal returns(uint){
         counter++; //Cannot be view since we are modifying sth in the function.
@@ -103,7 +111,8 @@ contract HollyRollyPolly is Tokencreation{
     }
     
     //Function runs into OutofGas issue. Put it as temporary measure. 
-    function removeBet()public{
+    function removeBet() public tempListClear{
+        require(playerinfo[msg.sender].userparticipate,"Cannot remove bet if user not in game");
         tokenpot = tokenpot.sub(playerinfo[msg.sender].bettokens);
         playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.add(playerinfo[msg.sender].bettokens);
         playerinfo[msg.sender].bettokens = 0;
@@ -139,9 +148,9 @@ contract HollyRollyPolly is Tokencreation{
         emit playerParticipate(msg.sender, _nroftokens, _numselected);
     }
     
-    function leave() public payable {
+    function leave() public payable tempListClear{
         require(msg.sender!=owner(),"The Owner cannot leave the lobby");
-        
+
        //Common code whether in game or not in game 
         //remove from globallist (using a crude for loop method because pop functionality in solidity cannot pop specified element)
         for (uint j=0; j<globallist.length; j++){
@@ -155,25 +164,8 @@ contract HollyRollyPolly is Tokencreation{
         changes[msg.sender].isChanged = false;
         
         //User already inside the game 
-        //if participate, wont get the betted tokens back to decentivise people from freely exiting after putting a bet
-        //therefore I reactivated the if tokenpot!=0 part so the owner gets the tokens betted by the person who left despite participating
        if (playerinfo[msg.sender].userparticipate==true){
-         //remove from playerlist 
-        for (uint i=0; i<playerlist.length; i++){
-            address payable userAddress=playerlist[i];
-            if (userAddress!=msg.sender){
-            temp_playerlist.push(userAddress);  
-            }
-        }
-        playerlist=temp_playerlist;
-        
-        if (playerinfo[msg.sender].totaltokens!=0){
-           TokentoEther(playerinfo[msg.sender].totaltokens); 
-        }
-
-        playerinfo[msg.sender].bettokens=0;
-        playerinfo[msg.sender].selectednr=0;
-        playerinfo[msg.sender].userparticipate=false;
+        removeBet();
         emit playerLeft(msg.sender,true); 
        }
        
@@ -185,7 +177,6 @@ contract HollyRollyPolly is Tokencreation{
         
         
     }
-    //what happens if its the owner who tries to leave prematurely? --For now cos not sure about bot banker implementation I just prevent owner from leaving 
     
     function numberofplayers() public view returns (uint){
         return playerlist.length;
@@ -237,10 +228,10 @@ contract HollyRollyPolly is Tokencreation{
               tokenpot=tokenpot.sub(payout);
               playerinfo[winnerAddress].totaltokens=playerinfo[winnerAddress].totaltokens.add(payout);
            } 
-           if (tokenpot!=0){
-               playerinfo[payable(owner())].totaltokens=playerinfo[payable(owner())].totaltokens.add(tokenpot);
-               tokenpot=0;
-           }
+           //if (tokenpot!=0){
+           //   playerinfo[payable(owner())].totaltokens=playerinfo[payable(owner())].totaltokens.add(tokenpot);
+           //   tokenpot=0;
+           //}
            
             for (uint i=0; i<globallist.length;i++){
                 address payable playerAddress=globallist[i];
