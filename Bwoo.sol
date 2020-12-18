@@ -89,13 +89,41 @@ contract HollyRollyPolly is Tokencreation{
     event earnings(address player, uint winnings);
     event playerLeft(address player, bool participate);
     
+    
+    
     function rndGenerate(uint mod) internal returns(uint){
         counter++; //Cannot be view since we are modifying sth in the function.
         emit randomStart();
         return uint(keccak256(abi.encodePacked(counter, block.timestamp, block.difficulty, msg.sender))) % mod;
     }
     
+    function changeRmOwner(address newOwner) public onlyOwner{
+        require(!playerinfo[payable(newOwner)].userparticipate, "The new owner cannot participate in-game. Ensure that bet is removed before switching owner.");
+        transferOwnership(newOwner);
+    }
+    
+    //Function runs into OutofGas issue. Put it as temporary measure. 
+    function removeBet()public{
+        tokenpot = tokenpot.sub(playerinfo[msg.sender].bettokens);
+        playerinfo[msg.sender].totaltokens=playerinfo[msg.sender].totaltokens.add(playerinfo[msg.sender].bettokens);
+        playerinfo[msg.sender].bettokens = 0;
+        playerinfo[msg.sender].selectednr= 0;
+        playerinfo[msg.sender].userparticipate=false;
+        uint getIndex = 0;
+        //For loop computation can be quite large, look into making this smaller.
+        for(uint i = 0; i < playerlist.length; i++){
+            if(playerlist[i] == msg.sender){
+                getIndex = i;
+            }
+        }
+        for(uint i = getIndex; i < playerlist.length - 1; i++){
+            playerlist[i] = playerlist[i+1];
+        }
+    }
+    
+    //Banker is not inclusive of no. of players. They either win all of players bet or win nth. 
     function participate(uint _nroftokens, uint _numselected) public payable {
+        require(msg.sender != owner(), "Room owner cannot participate in a bet.");
         require(betFixed == 0 || _nroftokens == betFixed, "Please bet tokens according to the bet allocated to room.");
         require(_nroftokens>0,"Need to bet more than 0");
         require(!playerinfo[msg.sender].userparticipate,"Player is already inside the game");
