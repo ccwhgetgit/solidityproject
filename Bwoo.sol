@@ -109,16 +109,13 @@ contract HollyRollyPolly is Tokencreation{
         playerinfo[msg.sender].bettokens = 0;
         playerinfo[msg.sender].selectednr= 0;
         playerinfo[msg.sender].userparticipate=false;
-        uint getIndex = 0;
-        //For loop computation can be quite large, look into making this smaller.
-        for(uint i = 0; i < playerlist.length; i++){
-            if(playerlist[i] == msg.sender){
-                getIndex = i;
+        for (uint i=0; i<playerlist.length; i++){
+            address payable userAddress=playerlist[i];
+            if (userAddress!=msg.sender){
+                temp_playerlist.push(userAddress);  
             }
         }
-        for(uint i = getIndex; i < playerlist.length - 1; i++){
-            playerlist[i] = playerlist[i+1];
-        }
+        playerlist=temp_playerlist;
     }
     
     //Banker is not inclusive of no. of players. They either win all of players bet or win nth. 
