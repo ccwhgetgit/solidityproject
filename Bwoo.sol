@@ -3,6 +3,60 @@ pragma solidity ^0.7.5;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
+//Basic Contract Room creation + Limit seems to be working. Pending implementation for playerJoinRoom...
+contract Factory{
+    HollyRollyPolly [] public rooms; //Using pointers
+    HollyRollyPolly [] public tempRooms; //Used as temporary storage for closing rooms. 
+    uint maxFacLimit = 2;
+    HollyRollyPolly [] public historyRooms; //Rooms that are self-destructed.
+    
+    struct PlayerInfo{
+        bool inRoom;
+    }
+    
+    modifier clearTempList{
+        if(tempRooms.length!=0){
+            delete tempRooms;
+        }
+        _;
+    }
+    
+    function createRooms()public{
+        require(rooms.length < maxFacLimit, "Maximum Capacity reached. Please wait...");
+        HollyRollyPolly newRm = new HollyRollyPolly();
+        rooms.push(newRm);
+    }
+    
+    //Not sure for this to put in procedure of HRP 
+    function playerJoinRoom(HollyRollyPolly rm) public{
+        
+    }
+    
+    //Close room.
+    function closeRoom(HollyRollyPolly rm)public clearTempList{ //Runs in O(n) time. 
+        for(uint i = 0; i < maxFacLimit; i++){
+            if(rm == rooms[i]){
+                historyRooms.push(rm);
+                continue; //Skip this because this is going to be stored in history. 
+            } else{
+                tempRooms.push(rooms[i]);
+            }
+        }
+        rooms = tempRooms; //Overwrite existing rooms with temp rooms. 
+    }
+    
+    //Display all available rooms in lobby.
+    function dispLobby() public view returns(HollyRollyPolly [] memory hrp){
+        return rooms;
+    } 
+    
+    //Display total number of existing rooms.     
+    function getTotalRooms() public view returns (uint){
+        return rooms.length;
+    }
+    
+}
+
 contract Tokencreation is Ownable{
     using SafeMath for uint;
     
@@ -79,8 +133,8 @@ contract HollyRollyPolly is Tokencreation{
     uint startTime;
     GameState state = GameState.NOTSTARTED;
     
-    // constructor() public{
-    //     owner=msg.sender;
+    // constructor(address newOwner) public{
+    //     owner = newOwner;
     // }
     
     event randomStart();
@@ -110,7 +164,6 @@ contract HollyRollyPolly is Tokencreation{
         transferOwnership(newOwner);
     }
     
-    //Function runs into OutofGas issue. Put it as temporary measure. 
     function removeBet() public tempListClear{
         require(playerinfo[msg.sender].userparticipate,"Cannot remove bet if user not in game");
         tokenpot = tokenpot.sub(playerinfo[msg.sender].bettokens);
