@@ -3,16 +3,12 @@ pragma solidity ^0.7.5;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-//Basic Contract Room creation + Limit seems to be working. Pending implementation for playerJoinRoom...
+//Basic Contract Room creation + Limit working. When player joins room, automatically switch context to relevant HRP address. 
 contract Factory{
     HollyRollyPolly [] public rooms; //Using pointers
     HollyRollyPolly [] public tempRooms; //Used as temporary storage for closing rooms. 
-    uint maxFacLimit = 2;
+    uint maxFacLimit = 2; //Set to 2 for debugging purpose... 
     HollyRollyPolly [] public historyRooms; //Rooms that are self-destructed.
-    
-    struct PlayerInfo{
-        bool inRoom;
-    }
     
     modifier clearTempList{
         if(tempRooms.length!=0){
@@ -24,17 +20,18 @@ contract Factory{
     function createRooms()public{
         require(rooms.length < maxFacLimit, "Maximum Capacity reached. Please wait...");
         HollyRollyPolly newRm = new HollyRollyPolly();
+        newRm.transferOwnership(msg.sender); //To set current user as owner
         rooms.push(newRm);
     }
     
-    //Not sure for this to put in procedure of HRP 
-    function playerJoinRoom(HollyRollyPolly rm) public{
-        
+    function checkOwner(HollyRollyPolly rm) public view returns(address){
+        return rm.owner();
     }
     
-    //Close room.
-    function closeRoom(HollyRollyPolly rm)public clearTempList{ //Runs in O(n) time. 
-        for(uint i = 0; i < maxFacLimit; i++){
+    //Close room. Only run this after the contract has self-destruct. ONLY RUN THIS WHEN OWNER CLOSE ROOM. THIS FUNCTION NEEDS TO BE HIDDEN FROM OTHER USERS EXCEPT OWNERS.
+    function closeRoom(HollyRollyPolly rm)public clearTempList{ 
+        //require(rm.owner() == msg.sender, "Only owner of the room can close the room."); //Check only works if room has not self-destruct. Quite buggy at times. 
+        for(uint i = 0; i < rooms.length; i++){
             if(rm == rooms[i]){
                 historyRooms.push(rm);
                 continue; //Skip this because this is going to be stored in history. 
@@ -53,6 +50,11 @@ contract Factory{
     //Display total number of existing rooms.     
     function getTotalRooms() public view returns (uint){
         return rooms.length;
+    }
+    
+    //Display all the history rooms that has closed. (FOR DEBUGGING/AUDIT PURPOSE ONLY)
+    function dispHistoryRooms()public view returns(HollyRollyPolly [] memory hrp){
+        return historyRooms;
     }
     
 }
@@ -124,17 +126,20 @@ contract HollyRollyPolly is Tokencreation{
     
     enum GameState{NOTSTARTED, INPROGRESS, ENDED}
     //address payable owner;
-    address payable[] playerlist;
-    address payable[] temp_playerlist;
+    //address payable[] public currPlayerList; //This list will contain players that are in lobby. 
+    address payable[] partcipatinglist; //This list will contain players that are participating in the bet. 
+    address payable[] temp_participatinglist; //This list will contain temp players that are participating in the bet. 
     address payable[] winnerlist;
+    uint roomLimit = 3;
     uint tokenpot;
     uint counter=1;
     uint betFixed = 0;
     uint startTime;
+    uint deadTime;
     GameState state = GameState.NOTSTARTED;
     
     // constructor(address newOwner) public{
-    //     owner = newOwner;
+    //     owner() = payable(newOwner);
     // }
     
     event randomStart();
@@ -144,14 +149,20 @@ contract HollyRollyPolly is Tokencreation{
     event playerLeft(address player, bool participate);
     
     modifier tempListClear(){
-        if(temp_playerlist.length!=0){
-            delete temp_playerlist;
+        if(temp_participatinglist.length!=0){
+            delete temp_participatinglist;
         }
         if(temp_globallist.length!=0){
             delete temp_globallist;
         }
         _;
     }
+    
+    // //Join room function has been implemented here since we cannot modify other contract state from factory. 
+    // function joinRoom() public{ //Run this first before any other step. 
+    //     require(currPlayerList.length < roomLimit, "Room is full. Please join another room or wait.");
+    //     currPlayerList.push(msg.sender);
+    // }
     
     function rndGenerate(uint mod) internal returns(uint){
         counter++; //Cannot be view since we are modifying sth in the function.
@@ -171,13 +182,13 @@ contract HollyRollyPolly is Tokencreation{
         playerinfo[msg.sender].bettokens = 0;
         playerinfo[msg.sender].selectednr= 0;
         playerinfo[msg.sender].userparticipate=false;
-        for (uint i=0; i<playerlist.length; i++){
-            address payable userAddress=playerlist[i];
+        for (uint i=0; i<partcipatinglist.length; i++){
+            address payable userAddress=partcipatinglist[i];
             if (userAddress!=msg.sender){
-                temp_playerlist.push(userAddress);  
+                temp_participatinglist.push(userAddress);  
             }
         }
-        playerlist=temp_playerlist;
+        partcipatinglist=temp_participatinglist;
     }
     
     //Banker is not inclusive of no. of players. They either win all of players bet or win nth. 
@@ -191,8 +202,9 @@ contract HollyRollyPolly is Tokencreation{
         if(betFixed == 0){ //Set the base template bet of the room.
             betFixed = _nroftokens;
             startTime=block.timestamp;
+            deadTime=startTime+30 minutes;
         }
-        playerlist.push(msg.sender);
+        partcipatinglist.push(msg.sender);
         playerinfo[msg.sender].bettokens=_nroftokens;
         playerinfo[msg.sender].selectednr=_numselected;
         tokenpot=tokenpot.add(_nroftokens);
@@ -231,13 +243,17 @@ contract HollyRollyPolly is Tokencreation{
         
     }
     
-    function numberofplayers() public view returns (uint){
-        return playerlist.length;
+    function dispPartListSize() public view returns (uint){
+        return partcipatinglist.length;
     }
     
+    // function dispRoomOccupancy() public view returns(uint){
+    //     return currPlayerList.length;
+    // }
+    
     //Gives the addressess of the participants (fyi NOT globallist) 
-    function displayPlayerList() public view returns (address payable[] memory){
-        return playerlist;
+    function displayPartList() public view returns (address payable[] memory){
+        return partcipatinglist;
     }
     
     //function check() public view returns(uint){
@@ -251,15 +267,15 @@ contract HollyRollyPolly is Tokencreation{
     //Only owner can start the game...
     function gameplay() public payable onlyOwner{
         //remember to change settings, currently set for debugging purposes 
-        require(playerlist.length>=1,"Not enough players");
+        require(partcipatinglist.length>=1,"Not enough players");
         require(state == GameState.NOTSTARTED, "Game is either in progress or has ended. Please start a new game.");
         state = GameState.INPROGRESS;
         //uint answer = rndGenerate(6) + 1;
         uint answer = 2;
         
         uint winnertottokens;
-        for (uint i=0; i<playerlist.length;i++){
-            address payable playerAddress=playerlist[i];
+        for (uint i=0; i<partcipatinglist.length;i++){
+            address payable playerAddress=partcipatinglist[i];
             if (playerinfo[playerAddress].selectednr==answer){
                 winnerlist.push(playerAddress);
                 winnertottokens+=playerinfo[playerAddress].bettokens;
