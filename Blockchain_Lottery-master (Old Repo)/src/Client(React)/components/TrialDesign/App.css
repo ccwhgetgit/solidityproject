@@ -1,0 +1,63 @@
+.App {
+  text-align: center;
+}
+
+
+.App-header {
+padding-top: 8%;
+padding-bottom: 8%;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url(./background.jpg);
+  font-size: 180%;
+  font-weight: bold; 
+  color: white;
+  color: white;
+}
+
+
+.App-link {
+  color: #61dafb;
+  font-size: 100%;
+  
+}
+
+.dice{
+  height : 108px; 
+}
+
+.spacecontainer{
+  height: 50px; 
+}
+
+.overall{
+  flex-direction: column;
+}
+
+.containerprofile{
+  min-height: 20vh;
+  flex-direction: row;
+  text-align: left;
+}
+
+.infocontainer{
+  padding-left: 20px;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 20vh;
+  flex-direction: row;
+  font-size: 120%; 
+}
+
+.gamecontainer{
+  padding-left: 20px;
+  padding-top: 20px;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 20vh;
+  text-align: left;
+  font-size: 120%; 
+}
+
+.sidenote{
+  font-size: 80%;
+}

@@ -1,0 +1,26 @@
+.App{
+  align-items: left;
+}
+.App-link {
+  color: #61dafb;
+  font-size: 100%;
+  
+}
+
+
+.spacecontainer{
+  width: 50px; 
+}
+.heightcontainer{
+  height: 50px; 
+}
+
+.containerprofile{
+  display: flex;
+  flex-direction: row;
+  
+  align-items: left;
+
+  
+}
+

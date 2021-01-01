@@ -1,0 +1,54 @@
+{
+  "name": "trial2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ethersproject/providers": "^5.0.17",
+    "@material-ui/core": "^4.11.2",
+    "@openzeppelin/network": "^0.4.3",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.5.0",
+    "@web3-react/core": "^6.1.1",
+    "@web3-react/injected-connector": "^6.0.7",
+    "bootstrap": "^4.5.3",
+    "react": "^17.0.1",
+    "react-avatar": "^3.9.7",
+    "react-bootstrap": "^1.4.0",
+    "react-dom": "^17.0.1",
+    "react-native-elements": "^3.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "react-user-avatar": "^1.10.0",
+    "truffle": "^5.1.57",
+    "web-vitals": "^0.2.4",
+    "web3": "^1.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.12.10"
+  }
+}
