@@ -1,4 +1,17 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+@import url("https://fonts.googleapis.com/css2?family=Atomic+Age&display=swap");
+
+x1homepage {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Helvetica", "Arial", "serif";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #ededed;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -12,7 +25,7 @@
 }
 
 .App-header {
-  background-color:red;
+  background-color: red;
   height: 150px;
   padding: 20px;
   color: white;
@@ -54,14 +67,14 @@
 }
 .atomicage-regular-normal-absolute-zero-36px {
   color: var(--absolute-zero);
-  font-family: "Atomic Age-Regular", Helvetica, Arial, serif;
+  font-family: "Atomic Age", Helvetica, Arial, serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 400;
 }
 .atomicage-regular-normal-governor-bay-36px {
   color: var(--governor-bay);
-  font-family: "Atomic Age-Regular", Helvetica, Arial, serif;
+  font-family: "Atomic Age", Helvetica, Arial, serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 400;
@@ -76,17 +89,7 @@
   font-style: normal;
   font-weight: 400;
 }
-.x1homepage {
-  align-items: center;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  justify-content: flex-start;
-  min-height: 2402px;
-  padding: 76px 0;
-  width: 1299px;
-}
+
 .x1homepage .address {
   background-color: transparent;
   flex-shrink: 0;
@@ -133,6 +136,7 @@
   margin-top: 0px;
   min-width: 941px;
   width: auto;
+  margin-left: 179px;
 }
 .x1homepage .back {
   margin-bottom: unset;
@@ -145,11 +149,10 @@
   height: 20px;
   letter-spacing: 0px;
   line-height: normal;
-  margin-left: 185px;
+  margin-left: 160px;
   margin-top: 5px;
   min-height: 20px;
   min-width: 129px;
-  text-align: center;
   width: auto;
 }
 .x1homepage .game-play {
@@ -198,41 +201,42 @@
   height: 20px;
   letter-spacing: 0px;
   line-height: normal;
-  margin-left: 169px;
+  margin-left: 172px;
   margin-top: 5px;
   min-height: 20px;
   min-width: 157px;
-  text-align: center;
   width: auto;
 }
 .x1homepage .overlap-group {
   align-items: flex-start;
   background-color: var(--purple);
   border-radius: 20px;
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   flex-shrink: 0;
   height: 233px;
   justify-content: flex-end;
-  margin-left: 50px;
-  margin-top: 95px;
+  margin-left: 169px;
+  margin-top: 22px;
+  margin-right: 20px;
   min-width: 1011px;
-  padding: 33px 80px;
+  padding: 33px 30px 33px 100px;
   width: auto;
 }
 .x1homepage .overlap-group1 {
-  align-items: flex-start;
+  align-items: center;
   background-color: orange;
   border-radius: 20px;
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   flex-shrink: 0;
   height: 233px;
-  justify-content: flex-start;
-  margin-left: 50px;
+  justify-content: center;
+  margin-left: 169px;
   margin-top: 22px;
+  margin-right: 20px;
   min-width: 1011px;
-  padding: 43px 68px;
+  padding: 33px 80px;
   width: auto;
 }
 .x1homepage .overlap-group2 {
@@ -247,22 +251,13 @@
   flex-direction: row;
   flex-shrink: 0;
   height: 43px;
-  justify-content: flex-end;
+  justify-content: center;
   margin-left: 299px;
   min-width: 206px;
   padding: 12px 48px;
   width: auto;
 }
-.x1homepage .participate {
-  background-color: transparent;
-  flex-shrink: 0;
-  height: auto;
-  letter-spacing: 0px;
-  line-height: normal;
-  min-height: 18px;
-  text-align: center;
-  width: 107px;
-}
+
 .x1homepage .playerspng {
   background-color: transparent;
   flex-shrink: 0;
@@ -277,6 +272,7 @@
   flex-shrink: 0;
   height: 139px;
   width: 139px;
+  margin-left: 179px;
 }
 .x1homepage .room-details {
   align-self: flex-start;
@@ -293,14 +289,7 @@
 }
 .x1homepage .span1 {
   color: rgba(0, 86, 189, 1);
-  font-family: "Atomic Age-Regular", Helvetica, Arial, serif;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-}
-.x1homepage .span2 {
-  color: rgba(230, 227, 227, 1);
-  font-family: "Atomic Age-Regular", Helvetica, Arial, serif;
+  font-family: "Atomic Age", Helvetica, Arial, serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 400;
@@ -329,7 +318,7 @@
   margin-top: 30px;
   min-height: 25px;
   min-width: 339px;
-  text-align: left;
+  text-align: center;
   width: auto;
 }
 .x1homepage .title {
@@ -338,7 +327,41 @@
   height: 57px;
   margin-left: 1px;
   width: 560px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.x1homepage .back-frame {
+  align-items: flex-start;
+  background-color: transparent;
+  border-radius: 10px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 60px;
+  justify-content: flex-start;
+  margin-bottom: 1px;
+  margin-left: 169px;
+  padding: 16px 34px;
+  width: 164px;
+}
+
+.x1homepage .startGame-frame {
+  align-items: flex-end;
+  background-color: transparent;
+  border-radius: 10px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 60px;
+  justify-content: flex-start;
+  margin-bottom: 1px;
+  margin-left: 650px;
+  padding: 16px 34px;
+  width: 164px;
+}
+
 :root {
   --absolute-zero: rgba(0, 86, 189, 1);
   --chambray: rgba(70, 78, 138, 1);
@@ -352,6 +375,10 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
