@@ -119,73 +119,76 @@ class App extends React.Component {
   else{
     _inputPlayer="Players"
   }
-
-  return (
-    <div className="x1homepage">
-      <img className="title" src={X1HomepageData.title} />
-      <h1 className="room-details valign-text-middle border-class-1 atomicage-normal-white-36px">
-        <span>
-          <span className="span1">{X1HomepageData.spanText}</span>
-        </span>
-      </h1>
-      <div className="auto-flex2">
-        <img className="playerspng" src={X1HomepageData.playerspng} />
-        <div className={`nrplayers-frame border-class-2 ${""}`}>
-        <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">{this.state.players.length} {_inputPlayer}</div>
-      </div>
-        {/* <NrplayersFrame {...nrplayersFrameProps}>{nrplayersFrameData}</NrplayersFrame> */}
-      </div>
-      <div className="number-of-players valign-text-middle border-class-1 armata-regular-normal-black-16px">
-        {X1HomepageData.numberOfPlayers}{this.state.players.length}
-      </div>
-      <div className="auto-flex1">
-        <img className="potpng" src={X1HomepageData.potpng} />
-        <div className={`nrplayers-frame border-class-2 ${""}`}>
-        <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">{this.state.balance / 1000000000000000000} {_inputEth}</div>
-      </div>
-        {/* <NrplayersFrame {...nrplayersFrame2Props} className="pot-frame"></NrplayersFrame> */}
-      </div>
-      <div className="current-potsize valign-text-middle border-class-1 armata-regular-normal-black-16px">
-        {X1HomepageData.currentPotsize}{web3.utils.fromWei(this.state.balance, 'ether')} {_inputEth}
-      </div>
-      <div className="game-play valign-text-middle border-class-1 atomicage-regular-normal-absolute-zero-36px">
-        {X1HomepageData.gameplay}
-      </div>
-      <div className={`overlap-group ${""}`}>
-        <div className="text-2 border-class-1 armata-regular-normal-white-20px">{X1HomepageData.text2}
-          <input
-            type="number"
-            value={this.state.value}
-            onChange={event => this.setState({ value: event.target.value })}
-          />
+  if (this.state.pageLoading) {
+      return <h1>Now Connecting....</h1>
+  } else{
+      return (
+      <div className="x1homepage">
+        <img className="title" src={X1HomepageData.title} />
+        <h1 className="room-details valign-text-middle border-class-1 atomicage-normal-white-36px">
+          <span>
+            <span className="span1">{X1HomepageData.spanText}</span>
+          </span>
+        </h1>
+        <div className="auto-flex2">
+          <img className="playerspng" src={X1HomepageData.playerspng} />
+          <div className={`nrplayers-frame border-class-2 ${""}`}>
+          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">{this.state.players.length} {_inputPlayer}</div>
         </div>
-        {/* <Overlapgroup3 {...overlapgroup3Props}></Overlapgroup3> */}
-        <div className={`overlap-group3 ${""}`}>
-        <div className="participate border-class-1 lato-regular-normal-black-16px" onClick = {this.onSubmit}>Participate</div>
-      </div>
-      </div>
-      <div className="game-prompt valign-text-middle border-class-1 atomicage-regular-normal-governor-bay-36px">
-        {X1HomepageData.gamePrompt}
-      </div>
-      <div className="overlap-group1">
-        <div className="text-2 border-class-1 armata-regular-normal-white-20px">{this.state.message}</div>
-        {/* <div className="text-2 border-class-1 armata-regular-normal-black-20px">{this.state.message}</div> */}
-        {/* <Overlapgroup3 {...overlapgroup32Props} className="overlap-group2" /> */}
-      </div>
-      <div className="auto-flex">
-      <div className={`back-frame border-class-2 ${""}`}>
-        <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">Back</div>
-      </div>
-      <div className={`startGame-frame border-class-2 ${""}`}>
-        <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px" onClick={this.onClick}>Pick Winner!</div>
-      </div>
-        {/* <NrplayersFrame {...nrplayersFrame3Props} className="back">Back</NrplayersFrame>
-        <NrplayersFrame {...nrplayersFrame4Props} className="submit" /> */}
-      </div>
-      <Wave/>
-      </div>
-  );
-}
+          {/* <NrplayersFrame {...nrplayersFrameProps}>{nrplayersFrameData}</NrplayersFrame> */}
+        </div>
+        <div className="number-of-players valign-text-middle border-class-1 armata-regular-normal-black-16px">
+          {X1HomepageData.numberOfPlayers}{this.state.players.length}
+        </div>
+        <div className="auto-flex1">
+          <img className="potpng" src={X1HomepageData.potpng} />
+          <div className={`nrplayers-frame border-class-2 ${""}`}>
+          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">{this.state.balance / 1000000000000000000} {_inputEth}</div>
+        </div>
+          {/* <NrplayersFrame {...nrplayersFrame2Props} className="pot-frame"></NrplayersFrame> */}
+        </div>
+        <div className="current-potsize valign-text-middle border-class-1 armata-regular-normal-black-16px">
+          {X1HomepageData.currentPotsize}{web3.utils.fromWei(this.state.balance, 'ether')} {_inputEth}
+        </div>
+        <div className="game-play valign-text-middle border-class-1 atomicage-regular-normal-absolute-zero-36px">
+          {X1HomepageData.gameplay}
+        </div>
+        <div className={`overlap-group ${""}`}>
+          <div className="text-2 border-class-1 armata-regular-normal-white-20px">{X1HomepageData.text2}
+            <input
+              type="number"
+              value={this.state.value}
+              onChange={event => this.setState({ value: event.target.value })}
+            />
+          </div>
+          {/* <Overlapgroup3 {...overlapgroup3Props}></Overlapgroup3> */}
+          <div className={`overlap-group3 ${""}`}>
+          <div className="participate border-class-1 lato-regular-normal-black-16px" onClick = {this.onSubmit}>Participate</div>
+        </div>
+        </div>
+        <div className="game-prompt valign-text-middle border-class-1 atomicage-regular-normal-governor-bay-36px">
+          {X1HomepageData.gamePrompt}
+        </div>
+        <div className="overlap-group1">
+          <div className="text-2 border-class-1 armata-regular-normal-white-20px">{this.state.message}</div>
+          {/* <div className="text-2 border-class-1 armata-regular-normal-black-20px">{this.state.message}</div> */}
+          {/* <Overlapgroup3 {...overlapgroup32Props} className="overlap-group2" /> */}
+        </div>
+        <div className="auto-flex">
+        <div className={`back-frame border-class-2 ${""}`}>
+          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">Back</div>
+        </div>
+        <div className={`startGame-frame border-class-2 ${""}`}>
+          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px" onClick={this.onClick}>Pick Winner!</div>
+        </div>
+          {/* <NrplayersFrame {...nrplayersFrame3Props} className="back">Back</NrplayersFrame>
+          <NrplayersFrame {...nrplayersFrame4Props} className="submit" /> */}
+        </div>
+        <Wave/>
+        </div>
+      );
+    }
+  }
 }
 const Wave = () => {
       return(
