@@ -3,6 +3,7 @@ import {useState} from 'react'
 import './App.css';
 import web3 from './web3';
 import lottery from './lottery';
+import Button from '@material-ui/core/Button';
 
 
 class App extends React.Component {
@@ -162,27 +163,23 @@ class App extends React.Component {
             />
           </div>
           {/* <Overlapgroup3 {...overlapgroup3Props}></Overlapgroup3> */}
-          <div className={`overlap-group3 ${""}`}>
-          <div className="participate border-class-1 lato-regular-normal-black-16px" onClick = {this.onSubmit}>Participate</div>
+          <div className={`partButton ${""}`}>
+          <Button variant="contained" disabled={this.state.value<1} size="Large" className="participate border-class-1 lato-regular-normal-black-16px" onClick = {this.onSubmit}>Participate</Button>
         </div>
         </div>
         <div className="game-prompt valign-text-middle border-class-1 atomicage-regular-normal-governor-bay-36px">
           {X1HomepageData.gamePrompt}
         </div>
         <div className="overlap-group1">
-          <div className="text-2 border-class-1 armata-regular-normal-white-20px">{this.state.message}</div>
+          <div className="armata-regular-normal-white-20px">{this.state.message}</div>
           {/* <div className="text-2 border-class-1 armata-regular-normal-black-20px">{this.state.message}</div> */}
           {/* <Overlapgroup3 {...overlapgroup32Props} className="overlap-group2" /> */}
+        <div className={`backButton ${""}`}>
+          <Button variant="contained" size="Large" color="secondary" className="lato-regular-normal-black-16px">Back</Button>
         </div>
-        <div className="auto-flex">
-        <div className={`back-frame border-class-2 ${""}`}>
-          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px">Back</div>
+        <div className={`pickWinnerButton ${""}`}>
+          <Button variant="contained" disabled={this.state.players.length==0} size="Large" color="primary" className="lato-regular-normal-black-16px" onClick={this.onClick}>Pick Winner!</Button>
         </div>
-        <div className={`startGame-frame border-class-2 ${""}`}>
-          <div className="address valign-text-middle border-class-1 armata-regular-normal-black-16px" onClick={this.onClick}>Pick Winner!</div>
-        </div>
-          {/* <NrplayersFrame {...nrplayersFrame3Props} className="back">Back</NrplayersFrame>
-          <NrplayersFrame {...nrplayersFrame4Props} className="submit" /> */}
         </div>
         <Wave/>
         </div>
@@ -211,3 +208,4 @@ const Wave = () => {
     }
 
 export default App;
+
