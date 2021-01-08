@@ -101,6 +101,7 @@ x1homepage {
   text-align: center;
   width: 95px;
 }
+
 .x1homepage .auto-flex {
   align-items: flex-start;
   background-color: transparent;
@@ -110,10 +111,11 @@ x1homepage {
   height: 60px;
   justify-content: flex-start;
   margin-left: 44px;
-  margin-top: 172px;
+  margin-top: 130px;
   min-width: 803px;
   width: auto;
 }
+
 .x1homepage .auto-flex1 {
   align-items: center;
   background-color: transparent;
@@ -228,7 +230,7 @@ x1homepage {
   align-items: flex-start;
   background-color: orange;
   border-radius: 20px;
-  display: flex;
+  display: block;
   flex-direction: row;
   flex-shrink: 0;
   height: 233px;
@@ -238,25 +240,9 @@ x1homepage {
   margin-right: 1000px;
   min-width: 1011px;
   padding: 33px 30px 33px 100px;
-  width: auto;
 }
 .x1homepage .overlap-group2 {
   margin-left: 155px;
-}
-.x1homepage .overlap-group3 {
-  align-items: flex-end;
-  align-self: flex-end;
-  background-color: white;
-  border-radius: 8px;
-  display: inline-flex;
-  flex-direction: row;
-  flex-shrink: 0;
-  height: 43px;
-  justify-content: center;
-  margin-left: 130px;
-  min-width: 206px;
-  padding: 12px 48px;
-  width: auto;
 }
 
 .x1homepage .playerspng {
@@ -361,6 +347,36 @@ x1homepage {
   margin-left: 650px;
   padding: 16px 34px;
   width: 164px;
+}
+
+.x1homepage .partButton {
+  align-items: flex-end;
+  align-self: flex-end;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 130px;
+  min-width: 206px;
+}
+
+.x1homepage .backButton {
+  align-items: flex-end;
+  align-self: flex-end;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 0px;
+  margin-top: 100px;
+}
+
+.x1homepage .pickWinnerButton {
+  align-items: flex-end;
+  align-self: flex-end;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 575px;
+  margin-top: 100px;
 }
 
 :root {
