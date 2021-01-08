@@ -98,27 +98,27 @@ class App extends React.Component {
       potpng: "https://anima-uploads.s3.amazonaws.com/projects/5ff0a4b7fe424f757973934b/releases/5ff5cdb4c35e8b29a7cdaf05/img/potpng@1x.png",
       currentPotsize: "Current Potsize: ",
       gameplay: "GamePlay",
-      text2: "Please input number of tokens to bet: ",
+      text2: "INPUT NUMBER OF TOKENS TO BET",
       gamePrompt: "Game Prompt",
-      text1: this.state.message
+      text1: this.state.message,
     };
 
-  //Grammatical OCD 
-  var _inputEth = ""
-  var _inputPlayer=""
-  if(this.state.balance / 1000000000000000000 <= 1){
-    _inputEth="Ether"
-  }
-  else{
-    _inputEth="Ethers"
-  }
+//Grammatical OCD 
+  // var _inputEth = ""
+  // var _inputPlayer=""
+  // if(this.state.balance / 1000000000000000000==1){
+  //   _inputEth="Ether"
+  // }
+  // else{
+  //   _inputEth="Ethers"
+  // }
 
-  if(this.state.players.length <=1){
-    _inputPlayer="Player"
-  }
-  else{
-    _inputPlayer="Players"
-  }
+  // if(this.state.players.length==1){
+  //   _inputPlayer="Player"
+  // }
+  // else{
+  //   _inputPlayer="Players"
+  // }
 
   return (
     <div className="x1homepage">
@@ -168,8 +168,7 @@ class App extends React.Component {
         {X1HomepageData.gamePrompt}
       </div>
       <div className="overlap-group1">
-        <div className="text-2 border-class-1 armata-regular-normal-white-20px">{this.state.message}</div>
-        {/* <div className="text-2 border-class-1 armata-regular-normal-black-20px">{this.state.message}</div> */}
+        <div className="text-2 border-class-1 armata-regular-normal-black-20px">{this.state.message}</div>
         {/* <Overlapgroup3 {...overlapgroup32Props} className="overlap-group2" /> */}
       </div>
       <div className="auto-flex">
@@ -183,11 +182,12 @@ class App extends React.Component {
         <NrplayersFrame {...nrplayersFrame4Props} className="submit" /> */}
       </div>
       <Wave/>
-      </div>
+    </div>
   );
 }
 }
-const Wave = () => {
+
+ const Wave = () => {
       return(
         <svg height="100%" width="100%" id="bg-svg" viewBox="0 0 1440 500" xmlns="http://www.w3.org/2000/svg" 
         class="transition duration-300 ease-in-out delay-150"><defs><linearGradient id="gradient"><stop offset="5%" 

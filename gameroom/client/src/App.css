@@ -59,6 +59,7 @@ x1homepage {
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
+  text-align: left;
 }
 .atomicage-normal-white-36px {
   color: transparent;
@@ -215,28 +216,28 @@ x1homepage {
   flex-direction: row;
   flex-shrink: 0;
   height: 233px;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-left: 169px;
   margin-top: 22px;
-  margin-right: 20px;
+  margin-right: 1000px;
   min-width: 1011px;
   padding: 33px 30px 33px 100px;
   width: auto;
 }
 .x1homepage .overlap-group1 {
-  align-items: center;
+  align-items: flex-start;
   background-color: orange;
   border-radius: 20px;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
   height: 233px;
-  justify-content: center;
+  justify-content: flex-start;
   margin-left: 169px;
   margin-top: 22px;
-  margin-right: 20px;
+  margin-right: 1000px;
   min-width: 1011px;
-  padding: 33px 80px;
+  padding: 33px 30px 33px 100px;
   width: auto;
 }
 .x1homepage .overlap-group2 {
@@ -252,7 +253,7 @@ x1homepage {
   flex-shrink: 0;
   height: 43px;
   justify-content: center;
-  margin-left: 299px;
+  margin-left: 130px;
   min-width: 206px;
   padding: 12px 48px;
   width: auto;
